@@ -35,6 +35,19 @@ extension Dictionary {
     }
     return result
   }
+  
+  func toJSONString(with encoding: String.Encoding = .utf8) -> String? {
+    guard let data = try? JSONSerialization.data(withJSONObject: self, options: []) else { return nil }
+    return String(data: data, encoding: encoding)
+  }
+}
+
+extension String {
+  
+  func fromJSONStringToDictionary() -> [String: Any]? {
+    guard let data = self.data(using: .utf8) else { return nil }
+    return (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any]
+  }
 }
 
 

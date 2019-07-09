@@ -34,6 +34,7 @@
 		1C89E5622184BD3200CA3528 /* AnonUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C89E55E2184BD3200CA3528 /* AnonUser.png */; };
 		1C89E5632184BD3200CA3528 /* AnonUserCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C89E55F2184BD3200CA3528 /* AnonUserCover.png */; };
 		1C89E5642184BD3200CA3528 /* QuestionMark.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1C89E5602184BD3200CA3528 /* QuestionMark.jpg */; };
+		1CA81C2C22C40EB2004F85A4 /* PlayPortalRealtimeDataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA81C2B22C40EB2004F85A4 /* PlayPortalRealtimeDataClient.swift */; };
 		1CD1E3D9217F441900C2B083 /* PPSDK_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD1E3D8217F441900C2B083 /* PPSDK_SwiftTests.swift */; };
 		1CD1E3DB217F441900C2B083 /* PPSDK_Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CD1E3CD217F441900C2B083 /* PPSDK_Swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1CE0F8C8220DF81C00FCB87C /* PlayPortalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE0F8C6220DF81C00FCB87C /* PlayPortalNotification.swift */; };
@@ -83,6 +84,7 @@
 		1C89E55E2184BD3200CA3528 /* AnonUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AnonUser.png; sourceTree = "<group>"; };
 		1C89E55F2184BD3200CA3528 /* AnonUserCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AnonUserCover.png; sourceTree = "<group>"; };
 		1C89E5602184BD3200CA3528 /* QuestionMark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = QuestionMark.jpg; sourceTree = "<group>"; };
+		1CA81C2B22C40EB2004F85A4 /* PlayPortalRealtimeDataClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayPortalRealtimeDataClient.swift; sourceTree = "<group>"; };
 		1CD1E3CA217F441900C2B083 /* PPSDK_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PPSDK_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CD1E3CD217F441900C2B083 /* PPSDK_Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPSDK_Swift.h; sourceTree = "<group>"; };
 		1CD1E3CE217F441900C2B083 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		1CD1E3E6217F45D700C2B083 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				1CA81C2B22C40EB2004F85A4 /* PlayPortalRealtimeDataClient.swift */,
 				1C30807122B934A1004A8AD6 /* HTTPClient.swift */,
 				1C30807022B934A1004A8AD6 /* PlayPortalClient.swift */,
 				1C30807222B934A1004A8AD6 /* RefreshClient.swift */,
@@ -423,6 +426,7 @@
 				1C3A99F621979A7A0041DB2E /* Extensions.swift in Sources */,
 				1C477F8E217F977600B42160 /* PlayPortalError.swift in Sources */,
 				1C477F91217F977600B42160 /* PlayPortalUser.swift in Sources */,
+				1CA81C2C22C40EB2004F85A4 /* PlayPortalRealtimeDataClient.swift in Sources */,
 				1C30807322B934A2004A8AD6 /* PlayPortalClient.swift in Sources */,
 				1C89E5542184BD2B00CA3528 /* PlayPortalProfile.swift in Sources */,
 				1C8468BC21CAAB7800A540C8 /* Events.swift in Sources */,

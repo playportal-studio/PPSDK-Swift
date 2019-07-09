@@ -12,6 +12,11 @@ public enum PlayPortalError {
     case ssoFailed(message: String)
   }
   
+  public enum Socket: Error {
+    
+    case failedToConnect(reason: String)
+  }
+  
   public enum API: Error {
     
     case failedToMakeRequest(message: String)

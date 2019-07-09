@@ -291,6 +291,31 @@ public class PlayPortalHTTPClient {
     )
   }
   
+  func request<Result>(
+    url: String,
+    method: HTTPMethod,
+    queryParameters: HTTPQueryParameters? = nil,
+    body: HTTPBody? = nil,
+    headers: HTTPHeaderFields? = nil,
+    createRequest: CreateRequest? = nil,
+    handleFailure: HandleFailure? = nil,
+    handleSuccess: HandleSuccess<Result>? = nil,
+    completionWithResult: ((Error?, Result?) -> Void)?
+    ) -> Void
+  {
+    request(
+      url: url,
+      method: method,
+      queryParameters: queryParameters,
+      body: body,
+      headers: headers,
+      createRequest: createRequest,
+      handleFailure: handleFailure,
+      handleSuccess: handleSuccess,
+      completionWithAnyResult: { error, result in completionWithResult?(error, result as? Result) }
+    )
+  }
+  
   func request<Result: Decodable>(
     url: String,
     method: HTTPMethod,
