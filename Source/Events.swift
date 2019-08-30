@@ -44,6 +44,7 @@ class EventHandler {
   func addSubscriptions() {
     //  todo: remove
     subscribe(PlayPortalAuthClient.shared)
+    subscribe(PlayPortalGameClient.shared)
   }
   
   func publish(_ event: Event) {
@@ -52,19 +53,6 @@ class EventHandler {
     //        }
     for (id, _) in s {
       s[id]?.on(event: event)
-    }
-  }
-}
-
-extension EventHandler: EventSubscriber {
-  
-  func on(event: Event) {
-    switch event {
-    case .loggedOut:
-      subscribers.value = []
-      s = [:]
-    default:
-      break
     }
   }
 }

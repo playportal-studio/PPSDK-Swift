@@ -8,14 +8,10 @@
 import Foundation
 
 //  Responsible for making requests to playPORTAL game api
-public final class PlayPortalRealtimeClient: PlayPortalHTTPClient {
+final class PlayPortalRealtimeClient: PlayPortalHTTPClient {
   
   public static let shared = PlayPortalRealtimeClient()
   let socketClient: SocketClient = StreamSocketClient()
-  
-  private override init() {
-    
-  }
 }
 
 
@@ -26,6 +22,7 @@ extension PlayPortalRealtimeClient {
    Request authentication token to open socket connection.
    - Parameter completion: The closure called when the request finishes.
    - Parameter error: The error returned for an unsuccessful request.
+   - Parameter token: The token returned for a successful request that allows a socket connection to be opened.
    */
   func getToken(
     completion: @escaping (_ error: Error?, _ token: String?) -> Void)
@@ -62,10 +59,10 @@ extension PlayPortalRealtimeClient {
     getToken { error, token in
       guard error == nil,
         let token = token else {
-          return completion(error ?? PlayPortalError.Socket.failedToConnect(reason: "Request for socket authentication token failed."), nil)
+          return completion(error ?? PlayPortalError.Socket.failedToConnect(reason: "Socket authentication failed."), nil)
       }
       
-      self.socketClient.subscribe { message in
+      self.socketClient.subscribe { error, message in
         if let message = message as? [String: Any] {
           print("got socket message")
           print(message)

@@ -116,7 +116,7 @@ public class PlayPortalHTTPClient {
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
     
-    if let body = body {
+    if let body = body, JSONSerialization.isValidJSONObject(body) {
       request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted])
     }
     

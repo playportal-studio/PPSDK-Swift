@@ -13,7 +13,9 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Source/*.swift"
   spec.swift_version = '4.2'
   spec.ios.deployment_target = '10.0'
+  spec.static_framework = true
   spec.dependency 'KeychainSwift', '~> 12.0'
+  spec.dependency 'AnyCodable-FlightSchool', '~> 0.2.2'
   spec.resource_bundles = {
       'PPSDK-Swift-Assets' => ['Resources/*']
   }

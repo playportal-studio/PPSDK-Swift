@@ -1,24 +1,28 @@
 PODS:
+  - AnyCodable-FlightSchool (0.2.3)
   - KeychainSwift (12.0.0)
   - Nimble (8.0.2)
   - Quick (2.1.0)
 
 DEPENDENCIES:
+  - AnyCodable-FlightSchool (~> 0.2.3)
   - KeychainSwift (~> 12.0)
   - Nimble
   - Quick
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AnyCodable-FlightSchool
     - KeychainSwift
     - Nimble
     - Quick
 
 SPEC CHECKSUMS:
+  AnyCodable-FlightSchool: cf53737f4bd1d9187cea453679734506e478fff3
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   Nimble: 622629381bda1dd5678162f21f1368cec7cbba60
   Quick: 4be43f6634acfa727dd106bdf3929ce125ffa79d
 
-PODFILE CHECKSUM: a6198462b31bb26758356e44ddf0aa62a1aac163
+PODFILE CHECKSUM: e217509a9e6740f0238587b11aa08f27d1423ae9
 
 COCOAPODS: 1.6.1

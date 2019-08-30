@@ -195,9 +195,7 @@ public final class PlayPortalAuthClient: PlayPortalHTTPClient {
    */
   public func open(url: URL) -> Void {
     
-    //  Dismiss safari view controller
-    safariViewController?.dismiss(animated: true, completion: nil)
-    
+
     //  Extract tokens
     guard let accessToken = url.getParameter(for: "access_token") else {
       loginDelegate?.didFailToLogin?(with: PlayPortalError.SSO.ssoFailed(message: "Could not extract access token from redirect uri."))
@@ -213,50 +211,13 @@ public final class PlayPortalAuthClient: PlayPortalHTTPClient {
     PlayPortalAuthClient.accessToken = accessToken
     PlayPortalAuthClient.refreshToken = refreshToken
     
-    //  Request current user's profile
-    if let completion = isAuthenticatedCompletion {
-      PlayPortalUserClient.shared.getMyProfile(completion: completion)
+    //  Dismiss safari view controller
+    safariViewController?.dismiss(animated: true) {
+      //  Request current user's profile
+      if let completion = self.isAuthenticatedCompletion {
+        PlayPortalUserClient.shared.getMyProfile(completion: completion)
+      }
     }
-  }
-  
-  //  TODO: - remove all refresh code
-  struct TokenResponse: Codable {
-    
-    let accessToken: String
-    let refreshToken: String
-    
-    enum CodingKeys: String, CodingKey {
-      case accessToken = "access_token"
-      case refreshToken = "refresh_token"
-    }
-  }
-  
-  /**
-   Called when a refresh is required.
-   
-   - Parameter completion: The closure invoked when the request finishes.
-   - Parameter error: The error returned on an unsuccessful request.
-   - Parameter accessToken: The new access token returned on a successful request.
-   - Parameter refreshToken: The new refresh token returned on a successful request.
-   
-   - Returns: Void
-   */
-  
-  //  todo: remove
-  func refresh(
-    accessToken: String,
-    refreshToken: String,
-    completion: @escaping (_ error: Error?, _ accessToken: String?, _ refreshToken: String?) -> Void)
-    -> Void
-  {
-    //        let request = AuthRouter.refresh(accessToken: accessToken, refreshToken: refreshToken, clientId: PlayPortalClient.clientId, clientSecret: PlayPortalClient.clientSecret, grantType: "refresh_token")
-    //        RequestHandler.shared.request(request) { (error, tokenResponse: TokenResponse?) in
-    //            completion(error, tokenResponse?.accessToken, tokenResponse?.refreshToken)
-    //        }
-  }
-  
-  override func onEvent() {
-    print("calling on event in auth")
   }
   
   /**
@@ -265,34 +226,32 @@ public final class PlayPortalAuthClient: PlayPortalHTTPClient {
    - Returns: Void
    */
   public func logout() -> Void {
-    
     var body = [String: String]()
     
     if let refreshToken = PlayPortalAuthClient.refreshToken {
       body["refresh_token"] = refreshToken
     }
     
+    guard let accessToken = PlayPortalAuthClient.accessToken else {
+      return
+    }
+    
+    globalStorageHandler.delete("accessToken")
+    globalStorageHandler.delete("refreshToken")
+    
     request(
       url: AuthEndpoints.logout,
       method: .post,
       body: body,
+      createRequest: standardAuthRequestCreator(accessToken: accessToken),
       handleSuccess: { _, data in data }
     ) { error, _ in
       PlayPortalAuthClient.lock.lock(); defer { PlayPortalAuthClient.lock.unlock() }
       
-      URLSession.shared.getAllTasks { $0.forEach { $0.cancel() }}
-      globalStorageHandler.delete("accessToken")
-      globalStorageHandler.delete("refreshToken")
       PlayPortalAuthClient.isRefreshing = false
       PlayPortalAuthClient.requestsToRetry.removeAll()
       
-      self.onEvent()
-      
-      if let error = error {
-        self.loginDelegate?.didLogout?(with: error)
-      } else {
-        self.loginDelegate?.didLogoutSuccessfully?()
-      }
+      EventHandler.shared.publish(.loggedOut(error: error))
     }
   }
 }

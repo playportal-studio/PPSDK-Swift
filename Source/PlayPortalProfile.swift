@@ -57,7 +57,7 @@ public struct PlayPortalProfile: Codable {
   }
 }
 
-extension PlayPortalProfile: Equatable {
+extension PlayPortalProfile: Equatable, Hashable {
   
   public static func ==(lhs: PlayPortalProfile, rhs: PlayPortalProfile) -> Bool {
     return lhs.userId == rhs.userId
