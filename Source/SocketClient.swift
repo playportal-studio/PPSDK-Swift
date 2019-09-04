@@ -122,20 +122,15 @@ extension StreamSocketClient: SocketClient {
         self.subscriber?(error, nil)
       } else if let data = data, let stringData = String(data: data, encoding: .utf8) {
         
-//        print("\n\n got raw socket message \n\n")
-        self.messageBuffer += stringData
-//        print(self.messageBuffer)
-        var fullMessages = self.messageBuffer.split(separator: "\n")
+        var fullMessages = (self.messageBuffer + stringData).split(separator: "\n")
+        var indicesToRemove = [Int]()
 
-        var numberOfFullMessages = 0
-
-        for stringMessage in fullMessages {
+        for (i, stringMessage) in fullMessages.enumerated() {
           if let data = stringMessage.data(using: .utf8),
             let message = try? JSONDecoder().decode(SocketMessage.self, from: data)
           {
-//            print("\n\n decoded socket message \n\n")
-            numberOfFullMessages += 1
-            
+            indicesToRemove.append(i)
+
             if !message.success {
               //  TODO: handle error messages
             } else if message.internal {
@@ -148,8 +143,10 @@ extension StreamSocketClient: SocketClient {
           }
         }
         
-        let incompleteMessages = fullMessages.dropFirst(numberOfFullMessages)
-        self.messageBuffer = incompleteMessages.joined()
+        for i in indicesToRemove where i < fullMessages.count {
+          fullMessages.remove(at: i)
+        }
+        self.messageBuffer = fullMessages.joined()
       }
       
       if !atEOF {
