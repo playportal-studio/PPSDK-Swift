@@ -198,24 +198,28 @@ public final class PlayPortalAuthClient: PlayPortalHTTPClient {
     //  Dismiss safari view controller
     safariViewController?.dismiss(animated: true, completion: nil)
     
-    //  Extract tokens
-    guard let accessToken = url.getParameter(for: "access_token") else {
-      loginDelegate?.didFailToLogin?(with: PlayPortalError.SSO.ssoFailed(message: "Could not extract access token from redirect uri."))
-      return
-    }
-    guard let refreshToken = url.getParameter(for: "refresh_token") else {
-      loginDelegate?.didFailToLogin?(with: PlayPortalError.SSO.ssoFailed(message: "Could not extract refresh token from redirect uri."))
-      return
-    }
-    
-    EventHandler.shared.publish(Event.authenticated(accessToken: accessToken, refreshToken: refreshToken))
-    
-    PlayPortalAuthClient.accessToken = accessToken
-    PlayPortalAuthClient.refreshToken = refreshToken
-    
-    //  Request current user's profile
-    if let completion = isAuthenticatedCompletion {
-      PlayPortalUserClient.shared.getMyProfile(completion: completion)
+    //  Playportal auto login
+    if let token = url.getParameter(for: "token"), let url = URL(string: "playportal://redirect_uri?token=\(token)") {
+        print(url.absoluteString)
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+        
+    } else if let accessToken = url.getParameter(for: "access_token")
+        , let refreshToken = url.getParameter(for: "refresh_token")
+    {
+        EventHandler.shared.publish(Event.authenticated(accessToken: accessToken, refreshToken: refreshToken))
+        
+        PlayPortalAuthClient.accessToken = accessToken
+        PlayPortalAuthClient.refreshToken = refreshToken
+        
+        //  Request current user's profile
+        if let completion = isAuthenticatedCompletion {
+            PlayPortalUserClient.shared.getMyProfile(completion: completion)
+        }
+    } else {
+        
+        loginDelegate?.didFailToLogin?(with: PlayPortalError.SSO.ssoFailed(message: "Could not extract access token from redirect uri."))
+        return
     }
   }
   
